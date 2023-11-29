@@ -6,19 +6,22 @@ namespace TFTIC_OO_ExoSupp_Delegue
     public enum RobotOrder { Forward, Left, Right }
     internal class Robot 
     {
+        #region Constructors
         public Robot(Grid grid, int positionX, int positionY)
         {
             MyGrid = grid;
             PositionX = positionX;
             PositionY = positionY;
         }
+        #endregion
 
+        #region Properties
         private Action orders;
 
         internal Grid MyGrid { get; private set; }
         internal Direction direction { get; private set; } = Direction.North;
         private int _positionX;
-        public int PositionX 
+        public int PositionX
         {
             get { return _positionX; }
             set
@@ -28,7 +31,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
             }
         }
         private int _positionY;
-        public int PositionY 
+        public int PositionY
         {
             get { return _positionY; }
             set
@@ -37,11 +40,13 @@ namespace TFTIC_OO_ExoSupp_Delegue
                 _positionY = value;
             }
         }
+        #endregion
 
+        #region Methods
         private void MoveForward()
-        { 
-            switch(direction) 
-            { 
+        {
+            switch (direction)
+            {
                 case Direction.North:
                     PositionY += 1;
                     break;
@@ -51,18 +56,18 @@ namespace TFTIC_OO_ExoSupp_Delegue
                 case Direction.South:
                     PositionY -= 1;
                     break;
-                default: 
-                    PositionX -= 1; 
+                default:
+                    PositionX -= 1;
                     break;
             }
             FinalPositionReached();
         }
-        private void TurnLeft() 
+        private void TurnLeft()
         {
             this.direction = direction - 1;
-            if((int)this.direction < 0) this.direction = Direction.West;
+            if ((int)this.direction < 0) this.direction = Direction.West;
         }
-        private void TurnRight() 
+        private void TurnRight()
         {
             this.direction = direction + 1;
             if ((int)this.direction > 3) this.direction = Direction.North;
@@ -82,7 +87,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
                     orders += TurnLeft;
                     break;
                 case RobotOrder.Right:
-                    orders += TurnRight;  
+                    orders += TurnRight;
                     break;
             }
         }
@@ -90,17 +95,18 @@ namespace TFTIC_OO_ExoSupp_Delegue
         public void Execute()
         {
             orders?.Invoke();
-            orders = null;        
+            orders = null;
         }
 
-        public bool FinalPositionReached() 
-        {            
-            if (PositionX == MyGrid.FinalX && PositionY == MyGrid.FinalY) 
+        public bool FinalPositionReached()
+        {
+            if (PositionX == MyGrid.FinalX && PositionY == MyGrid.FinalY)
             {
                 orders = null;
                 return true;
             }
             return false;
-        }
+        } 
+        #endregion
     }
 }

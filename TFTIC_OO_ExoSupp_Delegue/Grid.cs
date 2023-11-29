@@ -2,6 +2,7 @@
 {
     internal class Grid 
     {
+        #region Constructors
         public Grid()
         {
             Width = rand.Next(3, 21);
@@ -16,9 +17,11 @@
         //    Height = height;
         //    FinalX = finalX;
         //    FinalY = finalY;
-        //}
+        //} 
+        #endregion
 
 
+        #region Properties
         private int _width;
         public int Width
         {
@@ -38,35 +41,38 @@
             {
                 if (value <= 0) return;
                 _height = value;
-            } 
+            }
         }
         private int _finalX;
-        public int FinalX 
+        public int FinalX
         {
-            get { return _finalX;  }
-            private set 
+            get { return _finalX; }
+            private set
             {
                 if (!(value >= 0 && value <= _width)) return;
                 _finalX = value;
-            } 
+            }
         }
         private int _finalY;
-        public int FinalY 
+        public int FinalY
         {
-            get { return _finalY;  }
-            private set 
+            get { return _finalY; }
+            private set
             {
                 if (!(value >= 0 && value <= _height)) return;
                 _finalY = value;
-            } 
+            }
         }
 
         Random rand = new Random();
         public Robot robot { get; set; }
+        #endregion
 
+        #region Methods
         public void InitGame()
         {
-            robot = new Robot(this, rand.Next(0,Width+1), rand.Next(0, Height+1));
-        }
+            robot = new Robot(this, rand.Next(0, Width + 1), rand.Next(0, Height + 1));
+        } 
+        #endregion
     }
 }

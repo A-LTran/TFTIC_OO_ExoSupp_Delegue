@@ -39,13 +39,12 @@
                 for (int i = 0; i <= g.Width; i++)
                 {
                     if(g.robot.FinalPositionReached() && i == g.robot.PositionX && j == g.robot.PositionY) Console.Write(" V |");
-                    if (i == g.FinalX && j == g.FinalY && !g.robot.FinalPositionReached()) Console.Write(" X |");
-                    else if (i == g.robot.PositionX && j == g.robot.PositionY && !g.robot.FinalPositionReached()) Console.Write(" R |");
+                    else if (i == g.FinalX && j == g.FinalY) Console.Write(" X |");
+                    else if (i == g.robot.PositionX && j == g.robot.PositionY) Console.Write(" R |");
                     else Console.Write("   |");
                 }
                 Console.WriteLine();
                 Console.WriteLine(new string('-', (g.Width + 1) * 4 + 1));
-
             }
             Console.WriteLine();
         }
@@ -55,6 +54,9 @@
             string s = "";           
            
             RobotOrder order;
+
+            Console.WriteLine("Please help our robot in reaching his destination!\n");
+
             do
             {
                 DisplayPositionInfo(g);
@@ -68,6 +70,7 @@
                 if (s == "3")
                 {
                     g.robot.Execute();
+                    Console.WriteLine();
                     DisplayPositionInfo(g);
                     Console.WriteLine("Press Enter to continue...");
                     Console.ReadLine();
@@ -81,7 +84,7 @@
 
         static void DisplayPositionInfo(Grid g)
         {
-            Console.WriteLine();
+           
             Console.WriteLine($"Robot's position => X : {g.robot.PositionX} - Y : {g.robot.PositionY}.");
             Console.WriteLine($"Direction : {g.robot.direction}.");
             DrawGrid(g);

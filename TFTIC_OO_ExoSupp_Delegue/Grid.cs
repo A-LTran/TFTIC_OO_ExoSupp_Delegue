@@ -4,8 +4,8 @@
     {
         public Grid()
         {
-            Width = rand.Next(1, 21);
-            Height = rand.Next(1, 21);
+            Width = rand.Next(3, 21);
+            Height = rand.Next(3, 21);
             FinalX = rand.Next(0, Width + 1);
             FinalY = rand.Next(0, Height + 1);
         }

@@ -51,11 +51,8 @@
         static void UserMenu(Grid g)
         {
             string s = "";
-
-            RobotOrder order;
-
+            
             Console.WriteLine("Please help our robot in reaching his destination!\n");
-
             do
             {
                 DisplayPositionInfo(g);
@@ -83,7 +80,6 @@
 
         static void DisplayPositionInfo(Grid g)
         {
-
             Console.WriteLine($"Robot's position => X : {g.robot.PositionX} - Y : {g.robot.PositionY}.");
             Console.WriteLine($"Direction : {g.robot.direction}.");
             DrawGrid(g);

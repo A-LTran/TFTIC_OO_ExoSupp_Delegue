@@ -7,11 +7,11 @@ namespace TFTIC_OO_ExoSupp_Delegue
     internal class Robot 
     {
         #region Constructors
-        public Robot(Grid grid, int positionX, int positionY)
+        public Robot(Grid grid)
         {
             MyGrid = grid;
-            PositionX = positionX;
-            PositionY = positionY;
+            PositionX = 0;
+            PositionY = 0;
             robotEvent += MyGrid.UI.DisplayMessage;
         }
         #endregion
@@ -75,7 +75,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
                     break;
             }
             MyGrid.UI.RefreshGrid(this,new RobotEventArgs($"Moving {Direction}.", MessageType.Info));
-            CheckVictory();
+            MyGrid.CheckVictory();
         }
         private void TurnLeft()
         {
@@ -114,7 +114,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
             }
         }
 
-        private void CancelOrder()
+        public void CancelOrder()
         {
             orders = null;
         }
@@ -124,9 +124,14 @@ namespace TFTIC_OO_ExoSupp_Delegue
             robotEvent?.Invoke(this, new RobotEventArgs("Process initiated...", MessageType.Info));
             SavePosition();
             MyGrid.Attempts++;
-            orders?.Invoke();
+            if (orders is null)
+            {
+                MyGrid.UI.DisplayMessageAction("No previous orders have been registered...");
+                return;
+            }
+            orders();
             orders = null;
-            if (!CheckVictory())
+            if (!MyGrid.CheckVictory())
             {
                 robotEvent?.Invoke(this, new RobotEventArgs($"[Attempts : {MyGrid.Attempts}] - You have not reached the final destination! \n\tResetting moves...", MessageType.Info));
                 robotEvent?.Invoke(this, new RobotEventArgs($"Resetting previous positions...", MessageType.Info));
@@ -147,15 +152,15 @@ namespace TFTIC_OO_ExoSupp_Delegue
             PositionY = _oldPositionY;
         }
 
-        public bool CheckVictory()
-        {
-            if (PositionX == MyGrid.FinalX && PositionY == MyGrid.FinalY)
-            {
-                CancelOrder();
-                return true;
-            }
-            return false;
-        } 
+        //public bool CheckVictory()
+        //{
+        //    if (PositionX == MyGrid.FinalX && PositionY == MyGrid.FinalY)
+        //    {
+        //        CancelOrder();
+        //        return true;
+        //    }
+        //    return false;
+        //} 
         #endregion
     }
 }

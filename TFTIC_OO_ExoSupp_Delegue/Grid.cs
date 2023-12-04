@@ -16,15 +16,7 @@
             UI.DisplayILMessageAction += displayMessageIL;
             UI.ClearScreenAction += clearScreen;
             UI.ReceiveMessage += receiveMessage;
-        }
-
-        //public Grid(int width, int height, int finalX, int finalY)
-        //{
-        //    Width = width;
-        //    Height = height;
-        //    FinalX = finalX;
-        //    FinalY = finalY;
-        //} 
+        }      
         #endregion
 
 
@@ -83,8 +75,7 @@
         #region Methods
         public void InitGame()
         {
-            //robot = new Robot(this, rand.Next(0, Width + 1), rand.Next(0, Height + 1));
-            robot = new Robot(this, 0,0);
+            robot = new Robot(this);
             GameProcess();
         }
 
@@ -93,10 +84,10 @@
             UI.DisplayMessageAction?.Invoke("Please help our robot in reaching its destination!\n");
             do
             {
-                UI.RefreshGrid(robot, new RobotEventArgs("Grid has been initiated.\n", MessageType.Info), 0);
+                UI.RefreshGrid(robot, new RobotEventArgs("Grid has been refreshed.\n", MessageType.Info), 0);
                 robot.RegisterOrder(UI.MenuRobot(robot));
-                UI.DisplayMessageAction("\nPress Enter to continue...");
-                UI.ReceiveMessage();
+                //UI.DisplayMessageAction("\nPress Enter to continue...");
+                //UI.ReceiveMessage();
             } while (!quit);    
         }
 
@@ -117,6 +108,16 @@
             SetGrid();
             robot.PositionX = 0; 
             robot.PositionY=0;
+        }
+
+        public bool CheckVictory()
+        {
+            if (robot.PositionX == FinalX && robot.PositionY == FinalY)
+            {
+                robot.CancelOrder();
+                return true;
+            }
+            return false;
         }
         #endregion
     }

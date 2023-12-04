@@ -6,7 +6,6 @@ namespace TFTIC_OO_ExoSupp_Delegue
     {
         static void Main(string[] args)
         {
-
             Grid theGrid = new Grid
                 (
                     (Robot, RobotEventArgs) => { Console.WriteLine($"[{RobotEventArgs.MessageType}] - {RobotEventArgs.Message}"); },
@@ -15,27 +14,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
                     () => { Console.Clear(); },
                     () => { return Console.ReadLine(); }
                 );
-            theGrid.InitGame();
-
-            //theGrid.robot.robotEvent += (Robot, RobotEventArgs) => { Console.WriteLine($"[{RobotEventArgs.MessageType}] - {RobotEventArgs.Message}."); };
-            /*//theGrid.robot.RegisterOrder("Forward"); //Y+1
-            //theGrid.robot.RegisterOrder("Forward"); //Y+1
-
-            //theGrid.robot.RegisterOrder("Left"); // West
-            //theGrid.robot.RegisterOrder("Forward"); //X-1
-            //theGrid.robot.RegisterOrder("Forward"); //X-1
-
-            //theGrid.robot.RegisterOrder("Right"); // North
-            //theGrid.robot.RegisterOrder("Forward"); //Y+1
-            //theGrid.robot.RegisterOrder("Forward"); //Y+1
-
-            //theGrid.robot.RegisterOrder("Right"); // East
-            //theGrid.robot.RegisterOrder("Right"); // South
-            //theGrid.robot.RegisterOrder("Forward"); //X+1
-            //theGrid.robot.RegisterOrder("Forward"); //X+1
-
-            //theGrid.robot.Execute();*/
-            //UserMenu(theGrid);          
+            theGrid.InitGame();        
         }
 
         #region Methods

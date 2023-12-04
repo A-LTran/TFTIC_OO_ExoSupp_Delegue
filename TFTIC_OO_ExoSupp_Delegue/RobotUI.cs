@@ -68,7 +68,7 @@
                 DisplayILMessageAction?.Invoke((j<10)?$" {j} |":$"{j} |");
                 for (int i = 0; i <= g.Width; i++)
                 {
-                    if (g.robot.CheckVictory() && i == g.robot.PositionX && j == g.robot.PositionY) DisplayILMessageAction?.Invoke(" V |");
+                    if (g.robot.MyGrid.CheckVictory() && i == g.robot.PositionX && j == g.robot.PositionY) DisplayILMessageAction?.Invoke(" V |");
                     else if (i == g.FinalX && j == g.FinalY) DisplayILMessageAction?.Invoke(" X |");
                     else if (i == g.robot.PositionX && j == g.robot.PositionY) DisplayILMessageAction?.Invoke(" R |");
                     else DisplayILMessageAction?.Invoke("   |");
@@ -86,11 +86,10 @@
 
         private void DisplayPositionInfo(Grid g)
         {
-            if (g.robot.CheckVictory())
+            if (g.robot.MyGrid.CheckVictory())
             {
                 g.ResetGrid();
                 g.UI.RefreshGrid(g.robot, new RobotEventArgs("New grid initiated.", MessageType.Info));
-                //DisplayMessageAction?.Invoke("Initiating new grid...");
             }
             DisplayMessageAction?.Invoke($"Robot's position => X : {g.robot.PositionX} - Y : {g.robot.PositionY}.");
             DisplayMessageAction?.Invoke($"Direction : {g.robot.Direction}.");  

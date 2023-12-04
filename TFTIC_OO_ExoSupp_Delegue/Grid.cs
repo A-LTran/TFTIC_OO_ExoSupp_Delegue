@@ -86,8 +86,6 @@
             {
                 UI.RefreshGrid(robot, new RobotEventArgs("Grid has been refreshed.\n", MessageType.Info), 0);
                 robot.RegisterOrder(UI.MenuRobot(robot));
-                //UI.DisplayMessageAction("\nPress Enter to continue...");
-                //UI.ReceiveMessage();
             } while (!quit);    
         }
 

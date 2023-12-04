@@ -59,42 +59,41 @@
             Console.ResetColor();
         }
 
-        private void DrawGrid(Grid g)
+        private void DrawGrid(Grid grid)
         {
-            DisplayMessageAction?.Invoke(new string('-', (g.Width + 1) * 4 + 4));
+            DisplayMessageAction?.Invoke(new string('-', (grid.Width + 1) * 4 + 4));
 
-            for (int j = g.Height; j >= 0; j--)
+            for (int j = grid.Height; j >= 0; j--)
             {
                 DisplayILMessageAction?.Invoke((j<10)?$" {j} |":$"{j} |");
-                for (int i = 0; i <= g.Width; i++)
+                for (int i = 0; i <= grid.Width; i++)
                 {
-                    if (g.robot.MyGrid.CheckVictory() && i == g.robot.PositionX && j == g.robot.PositionY) DisplayILMessageAction?.Invoke(" V |");
-                    else if (i == g.FinalX && j == g.FinalY) DisplayILMessageAction?.Invoke(" X |");
-                    else if (i == g.robot.PositionX && j == g.robot.PositionY) DisplayILMessageAction?.Invoke(" R |");
+                    if (grid.robot.MyGrid.CheckVictory() && i == grid.robot.PositionX && j == grid.robot.PositionY) DisplayILMessageAction?.Invoke(" V |");
+                    else if (i == grid.FinalX && j == grid.FinalY) DisplayILMessageAction?.Invoke(" X |");
+                    else if (i == grid.robot.PositionX && j == grid.robot.PositionY) DisplayILMessageAction?.Invoke(" R |");
                     else DisplayILMessageAction?.Invoke("   |");
                 }
                 DisplayMessageAction?.Invoke(" ");
-                DisplayMessageAction?.Invoke(new string('-', (g.Width + 1) * 4 + 4));
+                DisplayMessageAction?.Invoke(new string('-', (grid.Width + 1) * 4 + 4));
             }
             DisplayILMessageAction?.Invoke("   |");
-            for (int i = 0; i <= g.Width; i++)
+            for (int i = 0; i <= grid.Width; i++)
             {
                 DisplayILMessageAction?.Invoke((i<10)?$" {i} |":$"{i} |");
             }
             DisplayMessageAction?.Invoke("\n");
         }
 
-        private void DisplayPositionInfo(Grid g)
+        private void DisplayPositionInfo(Grid grid)
         {
-            if (g.robot.MyGrid.CheckVictory())
+            if (grid.robot.MyGrid.CheckVictory())
             {
-                g.ResetGrid();
-                g.UI.RefreshGrid(g.robot, new RobotEventArgs("New grid initiated.", MessageType.Info));
+                grid.ResetGrid();
+                grid.UI.RefreshGrid(grid.robot, new RobotEventArgs("New grid initiated.", MessageType.Info));
             }
-            DisplayMessageAction?.Invoke($"Robot's position => X : {g.robot.PositionX} - Y : {g.robot.PositionY}.");
-            DisplayMessageAction?.Invoke($"Direction : {g.robot.Direction}.");  
-            DisplayMessageAction?.Invoke("");  
-            
+            DisplayMessageAction?.Invoke($"Robot's position => X : {grid.robot.PositionX} - Y : {grid.robot.PositionY}.");
+            DisplayMessageAction?.Invoke($"Direction : {grid.robot.Direction}.");  
+            DisplayMessageAction?.Invoke("");              
         }
     }
 }

@@ -5,10 +5,17 @@
         #region Constructors
         public Grid()
         {
-            Width = rand.Next(3, 21);
-            Height = rand.Next(3, 21);
-            FinalX = rand.Next(0, Width + 1);
-            FinalY = rand.Next(0, Height + 1);
+            SetGrid();
+        }
+        public Grid(Action<Object, RobotEventArgs> displayMessageObject, Action<string> displayMessage, Action<string> displayMessageIL, Action clearScreen, Func<string> receiveMessage)
+        {
+            SetGrid();
+            UI = new RobotUI();
+            UI.DisplayMessageObjectAction += displayMessageObject;
+            UI.DisplayMessageAction += displayMessage;
+            UI.DisplayILMessageAction += displayMessageIL;
+            UI.ClearScreenAction += clearScreen;
+            UI.ReceiveMessage += receiveMessage;
         }
 
         //public Grid(int width, int height, int finalX, int finalY)
@@ -64,15 +71,53 @@
             }
         }
 
-        Random rand = new Random();
+        public int Attempts { get; set; } = 0;
+        internal bool quit = false;
+
+        private Random rand = new Random();
+        public RobotUI UI { get; set; }
         public Robot robot { get; set; }
+
         #endregion
 
         #region Methods
         public void InitGame()
         {
-            robot = new Robot(this, rand.Next(0, Width + 1), rand.Next(0, Height + 1));
-        } 
+            //robot = new Robot(this, rand.Next(0, Width + 1), rand.Next(0, Height + 1));
+            robot = new Robot(this, 0,0);
+            GameProcess();
+        }
+
+        private void GameProcess()
+        {
+            UI.DisplayMessageAction?.Invoke("Please help our robot in reaching its destination!\n");
+            do
+            {
+                UI.RefreshGrid(robot, new RobotEventArgs("Grid has been initiated.\n", MessageType.Info), 0);
+                robot.RegisterOrder(UI.MenuRobot(robot));
+                UI.DisplayMessageAction("\nPress Enter to continue...");
+                UI.ReceiveMessage();
+            } while (!quit);    
+        }
+
+        public void SetGrid()
+        {
+            Width = rand.Next(3, 11);
+            Height = rand.Next(3, 11);
+            do
+            {
+                FinalX = rand.Next(0, Width + 1);
+                FinalY = rand.Next(0, Height + 1); 
+            } while (FinalX == 0 && FinalY == 0);
+        }
+
+        public void ResetGrid()
+        {
+            Attempts = 0;
+            SetGrid();
+            robot.PositionX = 0; 
+            robot.PositionY=0;
+        }
         #endregion
     }
 }

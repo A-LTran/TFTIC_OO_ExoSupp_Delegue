@@ -1,12 +1,23 @@
-﻿namespace TFTIC_OO_ExoSupp_Delegue
+﻿using System.Threading.Channels;
+
+namespace TFTIC_OO_ExoSupp_Delegue
 {
     internal class Program
     {
         static void Main(string[] args)
         {
 
-            Grid theGrid = new Grid();
+            Grid theGrid = new Grid
+                (
+                    (Robot, RobotEventArgs) => { Console.WriteLine($"[{RobotEventArgs.MessageType}] - {RobotEventArgs.Message}"); },
+                    (String) => { Console.WriteLine(String); },
+                    (String) => { Console.Write(String); },
+                    () => { Console.Clear(); },
+                    () => { return Console.ReadLine(); }
+                );
             theGrid.InitGame();
+
+            //theGrid.robot.robotEvent += (Robot, RobotEventArgs) => { Console.WriteLine($"[{RobotEventArgs.MessageType}] - {RobotEventArgs.Message}."); };
             /*//theGrid.robot.RegisterOrder("Forward"); //Y+1
             //theGrid.robot.RegisterOrder("Forward"); //Y+1
 
@@ -24,66 +35,72 @@
             //theGrid.robot.RegisterOrder("Forward"); //X+1
 
             //theGrid.robot.Execute();*/
-            UserMenu(theGrid);          
+            //UserMenu(theGrid);          
         }
 
         #region Methods
-        static void DrawGrid(Grid g)
-        {
-            Console.WriteLine(new string('-', (g.Width + 1) * 4 + 1));
+        //static void DrawGrid(Grid g)
+        //{
+        //    Console.WriteLine(new string('-', (g.Width + 1) * 4 + 1));
 
-            for (int j = g.Height; j >= 0; j--)
-            {
-                Console.Write("|");
-                for (int i = 0; i <= g.Width; i++)
-                {
-                    if (g.robot.FinalPositionReached() && i == g.robot.PositionX && j == g.robot.PositionY) Console.Write(" V |");
-                    else if (i == g.FinalX && j == g.FinalY) Console.Write(" X |");
-                    else if (i == g.robot.PositionX && j == g.robot.PositionY) Console.Write(" R |");
-                    else Console.Write("   |");
-                }
-                Console.WriteLine();
-                Console.WriteLine(new string('-', (g.Width + 1) * 4 + 1));
-            }
-            Console.WriteLine();
-        }
+        //    for (int j = g.Height; j >= 0; j--)
+        //    {
+        //        Console.Write("|");
+        //        for (int i = 0; i <= g.Width; i++)
+        //        {
+        //            if (g.robot.CheckVictory() && i == g.robot.PositionX && j == g.robot.PositionY) Console.Write(" V |");
+        //            else if (i == g.FinalX && j == g.FinalY) Console.Write(" X |");
+        //            else if (i == g.robot.PositionX && j == g.robot.PositionY) Console.Write(" R |");
+        //            else Console.Write("   |");
+        //        }
+        //        Console.WriteLine();
+        //        Console.WriteLine(new string('-', (g.Width + 1) * 4 + 1));
+        //    }
+        //    Console.WriteLine();
+        //}
 
-        static void UserMenu(Grid g)
-        {
-            string s = "";
+        //static void UserMenu(Grid g)
+        //{
+        //    string s = "";
             
-            Console.WriteLine("Please help our robot in reaching his destination!\n");
-            do
-            {
-                DisplayPositionInfo(g);
+        //    Console.WriteLine("Please help our robot in reaching its destination!\n");
+        //    do
+        //    {
+        //        DisplayPositionInfo(g);
 
-                Console.WriteLine("(The following options are case sensitive.)");
-                Console.WriteLine($"Robot orders : \n['0' or 'Forward' = move forward] \n['1' or 'Left' = turn left] \n['2' or 'Right' = turn right]");
-                Console.WriteLine($"Other options : \n['3' = Execute] \n['4' = Quit]");
+        //        Console.WriteLine("(The following options are case sensitive.)");
+        //        Console.WriteLine($"Robot orders : \n['0' or 'Forward' = move forward] \n['1' or 'Left' = turn left] \n['2' or 'Right' = turn right] \n['3' or 'Execute' = Execute]");
+        //        Console.WriteLine($"Other options : \n['4' = Quit]");
 
-                Console.Write($"Please enter your choice : ");
-                s = Console.ReadLine();
-                if (s == "3")
-                {
-                    g.robot.Execute();
-                    Console.WriteLine();
-                    DisplayPositionInfo(g);
-                    Console.WriteLine("Press Enter to continue...");
-                    Console.ReadLine();
-                }
-                else g.robot.RegisterOrder(s);
-                Console.Clear();
-            } while (s != "4" && !g.robot.FinalPositionReached());
+        //        Console.Write($"Please enter your choice : ");
+        //        s = Console.ReadLine();
+        //        Console.WriteLine();
 
-            Console.WriteLine("Well done!");
-        }
+        //        g.robot.RegisterOrder(s);
+        //        Console.WriteLine();
 
-        static void DisplayPositionInfo(Grid g)
-        {
-            Console.WriteLine($"Robot's position => X : {g.robot.PositionX} - Y : {g.robot.PositionY}.");
-            Console.WriteLine($"Direction : {g.robot.direction}.");
-            DrawGrid(g);
-        } 
+        //        DisplayPositionInfo(g);
+        //        if (!g.robot.CheckVictory()) g.robot.RestorePosition();
+
+        //        Console.WriteLine("Press Enter to continue...");
+        //        Console.ReadLine();
+                
+        //        Console.Clear();
+        //    } while (s != "4");
+
+        //}
+
+        //static void DisplayPositionInfo(Grid g)
+        //{
+        //    if (g.robot.CheckVictory())             
+        //    {                  
+        //        g.ResetGrid();
+        //        Console.WriteLine("Initiating new grid...");
+        //    }
+        //    Console.WriteLine($"Robot's position => X : {g.robot.PositionX} - Y : {g.robot.PositionY}.");
+        //    Console.WriteLine($"Direction : {g.robot.Direction}.");
+        //    DrawGrid(g);
+        //} 
         #endregion
     }
 }

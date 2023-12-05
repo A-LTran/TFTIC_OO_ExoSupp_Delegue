@@ -17,7 +17,6 @@ namespace TFTIC_OO_ExoSupp_Delegue
         #endregion
 
         #region Properties
-        private Action orders;
 
         internal Grid MyGrid { get; private set; }
         internal Direction Direction { get; private set; } = Direction.North;
@@ -52,11 +51,15 @@ namespace TFTIC_OO_ExoSupp_Delegue
         }
         private int _oldPositionY;
 
+        private Action orders;
         private Action<Robot, RobotEventArgs> robotEvent;
 
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Depending on the Direction, moving the robot one step forward.
+        /// </summary>
         private void MoveForward()
         {
             switch (Direction)
@@ -77,12 +80,19 @@ namespace TFTIC_OO_ExoSupp_Delegue
             MyGrid.UI.RefreshGrid(this,new RobotEventArgs($"Moving {Direction}.", MessageType.Info));
             MyGrid.CheckVictory();
         }
+
+        /// <summary>
+        /// Changing the direction to the left : North > West > South > East > North
+        /// </summary>
         private void TurnLeft()
         {
             this.Direction = Direction - 1;
             if ((int)this.Direction < 0) this.Direction = Direction.West;
             MyGrid.UI.RefreshGrid(this, new RobotEventArgs($"Turning left towards the {Direction}.", MessageType.Info));
         }
+        /// <summary>
+        /// Changing the direction to the right : North > East > South > West > North
+        /// </summary>
         private void TurnRight()
         {
             this.Direction = Direction + 1;
@@ -91,6 +101,10 @@ namespace TFTIC_OO_ExoSupp_Delegue
             MyGrid.UI.RefreshGrid(this, new RobotEventArgs($"Turning right towards the {Direction}.", MessageType.Info));                       
         }
 
+        /// <summary>
+        /// Register each order of a List of orders
+        /// </summary>
+        /// <param name="orderList"> List of 'RobotOrder' </param>
         public void RegisterOrder(List<RobotOrder> orderList)
         {
             foreach (RobotOrder order in orderList)
@@ -98,6 +112,11 @@ namespace TFTIC_OO_ExoSupp_Delegue
                 RegisterOrder(order);
             }
         }
+
+        /// <summary>
+        /// Register an order in my Action delegate 
+        /// </summary>
+        /// <param name="order"> RobotOrder </param>
         public void RegisterOrder(RobotOrder order)
         {           
             robotEvent?.Invoke(this, new RobotEventArgs($"[{order}] - Order registered!", MessageType.Info));
@@ -121,11 +140,18 @@ namespace TFTIC_OO_ExoSupp_Delegue
             }
         }
 
+        /// <summary>
+        /// Cancel all orders in Delegata Action
+        /// </summary>
         public void CancelOrder()
         {
             orders = null;
         }
 
+        /// <summary>
+        /// Execute all orders in Delegate Action if any.
+        /// Check if Victory conditions have been reached.
+        /// </summary>
         private void Execute()
         {
             robotEvent?.Invoke(this, new RobotEventArgs("Process initiated...", MessageType.Info));
@@ -133,7 +159,8 @@ namespace TFTIC_OO_ExoSupp_Delegue
             MyGrid.Attempts++;
             if (orders is null)
             {
-                MyGrid.UI.DisplayMessageAction("No previous orders have been registered...");
+                robotEvent?.Invoke(this, new RobotEventArgs("No previous orders have been registered...", MessageType.Info));
+                Thread.Sleep(3000);
                 return;
             }
             orders();
@@ -149,11 +176,17 @@ namespace TFTIC_OO_ExoSupp_Delegue
             Thread.Sleep(3000);
         }
 
+        /// <summary>
+        /// Saving robot current position[X,Y]
+        /// </summary>
         private void SavePosition()
         {
             _oldPositionX = PositionX;
             _oldPositionY = PositionY;
         }
+        /// <summary>
+        /// Restoring previous robot position[X,Y]
+        /// </summary>
         private void RestorePosition()
         {
             PositionX = _oldPositionX;

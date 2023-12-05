@@ -73,12 +73,20 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Initiating Robot object and the game.
+        /// </summary>
         public void InitGame()
         {
             robot = new Robot(this);
             GameProcess();
         }
 
+        /// <summary>
+        /// Initiation the game process.
+        /// > Display grid
+        /// > Register orders
+        /// </summary>
         private void GameProcess()
         {
             UI.DisplayMessageAction?.Invoke("Please help our robot in reaching its destination!\n");
@@ -89,6 +97,9 @@
             } while (!quit);    
         }
 
+        /// <summary>
+        /// Setting parameters for the grid
+        /// </summary>
         private void SetGrid()
         {
             Width = rand.Next(3, 11);
@@ -100,6 +111,9 @@
             } while (FinalX == 0 && FinalY == 0);
         }
 
+        /// <summary>
+        /// Resseting parameters for a new game.
+        /// </summary>
         public void ResetGrid()
         {
             Attempts = 0;
@@ -108,6 +122,10 @@
             robot.PositionY=0;
         }
 
+        /// <summary>
+        /// Checking if Victory conditions have been reached.
+        /// </summary>
+        /// <returns> Returns bool </returns>
         public bool CheckVictory()
         {
             if (robot.PositionX == FinalX && robot.PositionY == FinalY)

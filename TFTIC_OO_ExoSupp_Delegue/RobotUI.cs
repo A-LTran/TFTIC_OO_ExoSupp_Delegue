@@ -25,10 +25,11 @@
             Thread.Sleep(timer);
         }
 
-        public RobotOrder MenuRobot(Robot robot)
+        public List<RobotOrder> MenuRobot(Robot robot)
         { 
             RobotOrder robotOrder = new RobotOrder();
-            string s = "";
+            List<RobotOrder> robotOrderList = new List<RobotOrder>();
+            string userInput = "";
 
             do
             {
@@ -39,12 +40,21 @@
                 DisplayMessageAction?.Invoke($">> Other options : \n['4' or 'Quit' = Quit]");
 
                 DisplayILMessageAction?.Invoke($"\n>> Please enter your choice : ");
-                s = ReceiveMessage?.Invoke();
+                userInput = ReceiveMessage?.Invoke();
                 DisplayMessageAction?.Invoke("");
+                CheckUserValue(userInput);
+            } while (robotOrder != RobotOrder.Execute);
 
-            } while (!Enum.TryParse(s, out robotOrder));
+            return robotOrderList;
 
-            return robotOrder;
+            void CheckUserValue(string str) 
+            {
+                foreach (char character in str)
+                {
+                    if (Enum.TryParse(character.ToString(), out robotOrder)) robotOrderList.Add(robotOrder);
+                    if (robotOrder == RobotOrder.Execute) return;
+                }         
+            }
         }
 
         private void SetStyle(MessageType type)
@@ -89,7 +99,7 @@
             if (grid.robot.MyGrid.CheckVictory())
             {
                 grid.ResetGrid();
-                grid.UI.RefreshGrid(grid.robot, new RobotEventArgs("New grid initiated.", MessageType.Info));
+                grid.UI.RefreshGrid(grid.robot, new RobotEventArgs("New grid initiated.\n", MessageType.Info));
             }
             DisplayMessageAction?.Invoke($"Robot's position => X : {grid.robot.PositionX} - Y : {grid.robot.PositionY}.");
             DisplayMessageAction?.Invoke($"Direction : {grid.robot.Direction}.");  

@@ -52,7 +52,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
         }
         private int _oldPositionY;
 
-        public Action<Robot, RobotEventArgs> robotEvent;
+        private Action<Robot, RobotEventArgs> robotEvent;
 
         #endregion
 
@@ -91,6 +91,13 @@ namespace TFTIC_OO_ExoSupp_Delegue
             MyGrid.UI.RefreshGrid(this, new RobotEventArgs($"Turning right towards the {Direction}.", MessageType.Info));                       
         }
 
+        public void RegisterOrder(List<RobotOrder> orderList)
+        {
+            foreach (RobotOrder order in orderList)
+            {
+                RegisterOrder(order);
+            }
+        }
         public void RegisterOrder(RobotOrder order)
         {           
             robotEvent?.Invoke(this, new RobotEventArgs($"[{order}] - Order registered!", MessageType.Info));
@@ -119,7 +126,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
             orders = null;
         }
 
-        public void Execute()
+        private void Execute()
         {
             robotEvent?.Invoke(this, new RobotEventArgs("Process initiated...", MessageType.Info));
             SavePosition();
@@ -135,32 +142,24 @@ namespace TFTIC_OO_ExoSupp_Delegue
             {
                 robotEvent?.Invoke(this, new RobotEventArgs($"[Attempts : {MyGrid.Attempts}] - You have not reached the final destination! \n\tResetting moves...", MessageType.Info));
                 robotEvent?.Invoke(this, new RobotEventArgs($"Resetting previous positions...", MessageType.Info));
-
+                
                 RestorePosition();
             }
             else robotEvent?.Invoke(this, new RobotEventArgs($"[Attempts : {MyGrid.Attempts}] - You have reached your destination! Well done!", MessageType.Victory));
+            Thread.Sleep(3000);
         }
 
-        internal void SavePosition()
+        private void SavePosition()
         {
             _oldPositionX = PositionX;
             _oldPositionY = PositionY;
         }
-        internal void RestorePosition()
+        private void RestorePosition()
         {
             PositionX = _oldPositionX;
             PositionY = _oldPositionY;
-        }
-
-        //public bool CheckVictory()
-        //{
-        //    if (PositionX == MyGrid.FinalX && PositionY == MyGrid.FinalY)
-        //    {
-        //        CancelOrder();
-        //        return true;
-        //    }
-        //    return false;
-        //} 
+            Direction = Direction.North;
+        } 
         #endregion
     }
 }

@@ -67,8 +67,8 @@
         internal bool quit = false;
 
         private Random rand = new Random();
-        public RobotUI UI { get; set; }
-        public Robot robot { get; set; }
+        public RobotUI UI { get; private set; }
+        public Robot robot { get; private set; }
 
         #endregion
 
@@ -89,7 +89,7 @@
             } while (!quit);    
         }
 
-        public void SetGrid()
+        private void SetGrid()
         {
             Width = rand.Next(3, 11);
             Height = rand.Next(3, 11);

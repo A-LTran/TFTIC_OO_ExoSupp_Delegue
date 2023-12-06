@@ -4,7 +4,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
 {
     public enum Direction { North, East, South, West }
     public enum RobotOrder { Forward, Left, Right, Execute, Quit }
-    internal class Robot 
+    internal class Robot
     {
         #region Constructors
         public Robot(Grid grid)
@@ -41,10 +41,10 @@ namespace TFTIC_OO_ExoSupp_Delegue
             get { return _positionY; }
             set
             {
-                if (!(value >= 0 && value <= MyGrid.Height)) 
+                if (!(value >= 0 && value <= MyGrid.Height))
                 {
                     robotEvent?.Invoke(this, new RobotEventArgs("Aoutch, a wall!", MessageType.Erreur));
-                    return; 
+                    return;
                 }
                 _positionY = value;
             }
@@ -77,7 +77,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
                     PositionX -= 1;
                     break;
             }
-            MyGrid.UI.RefreshGrid(this,new RobotEventArgs($"Moving {Direction}.", MessageType.Info));
+            MyGrid.UI.RefreshGrid(this, new RobotEventArgs($"Moving {Direction}.", MessageType.Info));
             MyGrid.CheckVictory();
         }
 
@@ -97,8 +97,8 @@ namespace TFTIC_OO_ExoSupp_Delegue
         {
             this.Direction = Direction + 1;
             int DirectionLength = Enum.GetNames(typeof(Direction)).Length;
-            if ((int)this.Direction > DirectionLength-1) this.Direction = Direction.North;
-            MyGrid.UI.RefreshGrid(this, new RobotEventArgs($"Turning right towards the {Direction}.", MessageType.Info));                       
+            if ((int)this.Direction > DirectionLength - 1) this.Direction = Direction.North;
+            MyGrid.UI.RefreshGrid(this, new RobotEventArgs($"Turning right towards the {Direction}.", MessageType.Info));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
         /// </summary>
         /// <param name="order"> RobotOrder </param>
         public void RegisterOrder(RobotOrder order)
-        {           
+        {
             robotEvent?.Invoke(this, new RobotEventArgs($"[{order}] - Order registered!", MessageType.Info));
             switch (order)
             {
@@ -169,7 +169,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
             {
                 robotEvent?.Invoke(this, new RobotEventArgs($"[Attempts : {MyGrid.Attempts}] - You have not reached the final destination! \n\tResetting moves...", MessageType.Info));
                 robotEvent?.Invoke(this, new RobotEventArgs($"Resetting previous positions...", MessageType.Info));
-                
+
                 RestorePosition();
             }
             else robotEvent?.Invoke(this, new RobotEventArgs($"[Attempts : {MyGrid.Attempts}] - You have reached your destination! Well done!", MessageType.Victory));
@@ -192,7 +192,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
             PositionX = _oldPositionX;
             PositionY = _oldPositionY;
             Direction = Direction.North;
-        } 
+        }
         #endregion
     }
 }

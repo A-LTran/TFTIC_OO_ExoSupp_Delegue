@@ -14,7 +14,7 @@ namespace TFTIC_OO_ExoSupp_Delegue
                     () => { Console.Clear(); },
                     () => { return Console.ReadLine(); }
                 );
-            theGrid.InitGame();        
+            theGrid.InitGame();
         }
     }
 }

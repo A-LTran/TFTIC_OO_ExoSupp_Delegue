@@ -30,7 +30,7 @@
         public void RefreshGrid(Robot robot, RobotEventArgs rea, int timer = 1000)
         {
             ClearScreenAction?.Invoke();
-            
+
             DrawGrid(robot.MyGrid);
             DisplayMessage(robot, rea);
             Thread.Sleep(timer);
@@ -42,7 +42,7 @@
         /// <param name="robot"></param>
         /// <returns> Returns a list of orders </returns>
         public List<RobotOrder> MenuRobot(Robot robot)
-        { 
+        {
             RobotOrder robotOrder = new RobotOrder();
             List<RobotOrder> robotOrderList = new List<RobotOrder>();
             string userInput = "";
@@ -63,13 +63,13 @@
 
             return robotOrderList;
 
-            bool CheckUserValue(string str) 
+            bool CheckUserValue(string str)
             {
                 foreach (char character in str)
                 {
                     if (Enum.TryParse(character.ToString(), out robotOrder)) robotOrderList.Add(robotOrder);
                     if (robotOrder == RobotOrder.Execute || robotOrder == RobotOrder.Quit) return true;
-                }         
+                }
                 return false;
             }
         }
@@ -80,8 +80,8 @@
         /// <param name="type"> MessageType </param>
         private static void SetStyle(MessageType type)
         {
-            if(type == MessageType.Erreur) Console.ForegroundColor = ConsoleColor.Red;
-            else if(type == MessageType.Info) Console.ForegroundColor = ConsoleColor.Yellow;
+            if (type == MessageType.Erreur) Console.ForegroundColor = ConsoleColor.Red;
+            else if (type == MessageType.Info) Console.ForegroundColor = ConsoleColor.Yellow;
             else Console.ForegroundColor = ConsoleColor.Green;
         }
 
@@ -103,7 +103,7 @@
 
             for (int j = grid.Height; j >= 0; j--)
             {
-                DisplayILMessageAction?.Invoke((j<10)?$" {j} |":$"{j} |");
+                DisplayILMessageAction?.Invoke((j < 10) ? $" {j} |" : $"{j} |");
                 for (int i = 0; i <= grid.Width; i++)
                 {
                     if (grid.robot.MyGrid.CheckVictory() && i == grid.robot.PositionX && j == grid.robot.PositionY) DisplayILMessageAction?.Invoke(" V |");
@@ -117,7 +117,7 @@
             DisplayILMessageAction?.Invoke("   |");
             for (int i = 0; i <= grid.Width; i++)
             {
-                DisplayILMessageAction?.Invoke((i<10)?$" {i} |":$"{i} |");
+                DisplayILMessageAction?.Invoke((i < 10) ? $" {i} |" : $"{i} |");
             }
             DisplayMessageAction?.Invoke("\n");
         }
@@ -134,8 +134,8 @@
                 grid.UI.RefreshGrid(grid.robot, new RobotEventArgs("New grid initiated.\n", MessageType.Info));
             }
             DisplayMessageAction?.Invoke($"Robot's position => X : {grid.robot.PositionX} - Y : {grid.robot.PositionY}.");
-            DisplayMessageAction?.Invoke($"Direction : {grid.robot.Direction}.");  
-            DisplayMessageAction?.Invoke("");              
+            DisplayMessageAction?.Invoke($"Direction : {grid.robot.Direction}.");
+            DisplayMessageAction?.Invoke("");
         }
     }
 }

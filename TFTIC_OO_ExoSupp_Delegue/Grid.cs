@@ -1,6 +1,6 @@
 ﻿namespace TFTIC_OO_ExoSupp_Delegue
 {
-    internal class Grid 
+    internal class Grid
     {
         #region Constructors
         public Grid()
@@ -16,7 +16,7 @@
             UI.DisplayILMessageAction += displayMessageIL;
             UI.ClearScreenAction += clearScreen;
             UI.ReceiveMessage += receiveMessage;
-        }      
+        }
         #endregion
 
 
@@ -94,7 +94,7 @@
             {
                 UI.RefreshGrid(robot, new RobotEventArgs("Grid has been refreshed.\n", MessageType.Info), 0);
                 robot.RegisterOrder(UI.MenuRobot(robot));
-            } while (!quit);    
+            } while (!quit);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@
             do
             {
                 FinalX = rand.Next(0, Width + 1);
-                FinalY = rand.Next(0, Height + 1); 
+                FinalY = rand.Next(0, Height + 1);
             } while (FinalX == 0 && FinalY == 0);
         }
 
@@ -118,8 +118,8 @@
         {
             Attempts = 0;
             SetGrid();
-            robot.PositionX = 0; 
-            robot.PositionY=0;
+            robot.PositionX = 0;
+            robot.PositionY = 0;
         }
 
         /// <summary>
